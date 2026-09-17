@@ -85,7 +85,7 @@ Neither package lists the other as a dependency. Both need `protobuf`, but one r
 
 Typical workflow:
 
-1. Edit dependencies with `uv add` / `uv rm`.
+1. Edit dependencies with `uv add` / `uv remove`.
 2. That updates `pyproject.toml` and `uv.lock`.
 3. Run `uv sync` to (re)create or update `.venv`.
 4. Run code with `uv run`.
@@ -175,10 +175,10 @@ uv run python
 
 
 
-#### 4. `uv rm`
+#### 4. `uv remove`
 
 ```bash
-uv rm requests
+uv remove requests
 uv run python -c "import requests"
 ```
 
@@ -296,8 +296,8 @@ Use Git to share the project definition (`pyproject.toml`, `uv.lock`, `.python-v
 
 **Do not hand-edit:**
 
-- `uv.lock` (let `uv add`, `uv rm`, and `uv sync` maintain it)
-- Prefer changing dependencies with `uv add` / `uv rm` instead of hand-editing `pyproject.toml` dependency lists (avoids lockfile drift)
+- `uv.lock` (let `uv add`, `uv remove`, and `uv sync` maintain it)
+- Prefer changing dependencies with `uv add` / `uv remove` instead of hand-editing `pyproject.toml` dependency lists (avoids lockfile drift)
 
 Before you commit, make sure `.venv` is listed in `.gitignore`. Current `uv init` already adds a `.venv` line; this only appends one if it is missing:
 
