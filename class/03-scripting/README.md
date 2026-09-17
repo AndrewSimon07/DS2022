@@ -99,7 +99,7 @@ Create a practice folder and a first project inside it:
 ```bash
 mkdir -p ~/ds2022-fall-26/uv-practice
 cd ~/ds2022-fall-26/uv-practice
-uv init project-1 --name project-1 --description "Practice project for uv"
+uv init project-1 --python 3.11 --name project-1 --description "Practice project for uv"
 cd project-1
 ```
 
