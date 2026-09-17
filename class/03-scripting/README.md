@@ -71,7 +71,7 @@ The conflict is caused by:
 
 Neither package lists the other as a dependency. Both need `protobuf`, but one requires version 4.x and the other requires 6.x — no single version can satisfy both. The clean solution is **separate environments**: one project gets `dbt-core`, another gets `google-cloud-pubsub`. `uv` creates and manages those environments for you.
 
-### Core ideas
+### uv Core ideas
 
 
 | Piece             | Role                                                                               |
@@ -80,6 +80,7 @@ Neither package lists the other as a dependency. Both need `protobuf`, but one r
 | `pyproject.toml`  | Declares your project and its dependencies (what you want).                        |
 | `uv.lock`         | Pins the exact versions `uv` resolved (what you got). Makes installs reproducible. |
 | `.python-version` | Records which Python version this project expects.                                 |
+| `.git/` / `.gitignore` | Local Git repo for version control and ignore rules (`uv init` creates both by default). |
 
 
 Typical workflow:
@@ -108,11 +109,30 @@ cd project-1
 
 ```bash
 ls -la
+```
+
+Right after `uv init` (still inside `project-1`), you should see something like:
+
+```text
+.
+|-- .git/
+|-- .gitignore
+|-- .python-version
+|-- README.md
+|-- pyproject.toml
+`-- src/
+    `-- project_1/      # package name (hyphens become underscores)
+        `-- __init__.py
+```
+
+There is **no** `uv.lock` or `.venv/` yet — those appear after the first `uv add` (or `uv sync`). Your Python code goes in `src/project_1/`. Keep `__init__.py`; it lets you import the project as a bona fide package.
+
+```bash
 cat pyproject.toml
 cat .python-version
 ```
 
-You should see `pyproject.toml`, `.python-version`, `README.md`, and a `src/` package layout (for `project-1`, typically `src/project_1/`). Open `pyproject.toml` and notice that `dependencies` starts empty.
+Open `pyproject.toml` and notice that `dependencies` starts empty.
 
 #### 2. `uv add`
 
@@ -222,7 +242,7 @@ Typical layout (after `uv init` + `uv add`; current `uv` puts package code under
 |   |-- .gitignore
 |   |-- .python-version
 |   |-- src/
-|   |   `-- project_1/
+|   |   `-- project_1/      # name of your package
 |   |       `-- __init__.py
 |   `-- .venv/
 `-- project-2/
@@ -233,11 +253,12 @@ Typical layout (after `uv init` + `uv add`; current `uv` puts package code under
     |-- .gitignore
     |-- .python-version
     |-- src/
-    |   `-- project_2/
+    |   `-- project_2/      # name of your package
     |       `-- __init__.py
     `-- .venv/
 
 ```
+**Your Python code should go in the `src/<your_package>` directories.**
 
 In `project-2`, Pub/Sub imports work; `dbt` does not (it was never installed here):
 
@@ -278,10 +299,10 @@ Use Git to share the project definition (`pyproject.toml`, `uv.lock`, `.python-v
 - `uv.lock` (let `uv add`, `uv rm`, and `uv sync` maintain it)
 - Prefer changing dependencies with `uv add` / `uv rm` instead of hand-editing `pyproject.toml` dependency lists (avoids lockfile drift)
 
-Before you commit, make sure `.venv/` is listed in `.gitignore` (run this in each project directory if needed):
+Before you commit, make sure `.venv` is listed in `.gitignore`. Current `uv init` already adds a `.venv` line; this only appends one if it is missing:
 
 ```bash
-grep -q '^\.venv/$' .gitignore 2>/dev/null || echo ".venv/" >> .gitignore
+grep -qE '^\.venv/?$' .gitignore 2>/dev/null || echo ".venv/" >> .gitignore
 ```
 
 #### Connecting a local project to GitHub
