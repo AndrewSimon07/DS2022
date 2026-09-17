@@ -112,7 +112,7 @@ cat pyproject.toml
 cat .python-version
 ```
 
-You should see `pyproject.toml`, `.python-version`, and usually a small starter layout. Open `pyproject.toml` and notice that `dependencies` starts empty.
+You should see `pyproject.toml`, `.python-version`, `README.md`, and a `src/` package layout (for `project-1`, typically `src/project_1/`). Open `pyproject.toml` and notice that `dependencies` starts empty.
 
 #### 2. `uv add`
 
@@ -210,25 +210,31 @@ cd project-2
 uv add google-cloud-pubsub==2.40.0
 ```
 
-Typical layout:
+Typical layout (after `uv init` + `uv add`; current `uv` puts package code under `src/`):
 
 ```text
 ~/ds2022-fall-26/uv-practice/
 |-- project-1/
-|   |-- pyproject.toml      # includes dbt-core==1.7.14
+|   |-- pyproject.toml      # includes dbt-core==1.7.14 (and earlier requests)
 |   |-- uv.lock
 |   |-- README.md
 |   |-- .git/
 |   |-- .gitignore
 |   |-- .python-version
+|   |-- src/
+|   |   `-- project_1/
+|   |       `-- __init__.py
 |   `-- .venv/
 `-- project-2/
     |-- pyproject.toml      # includes google-cloud-pubsub==2.40.0
     |-- uv.lock
     |-- README.md
     |-- .git/
-    |-- .gitignore 
+    |-- .gitignore
     |-- .python-version
+    |-- src/
+    |   `-- project_2/
+    |       `-- __init__.py
     `-- .venv/
 
 ```
