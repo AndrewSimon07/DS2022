@@ -1,3 +1,11 @@
+# Jaafar Hermes
+
+- Hometown: Charlottesville, Virginia
+- Hobbies: Soccer, basketball, working out, and hanging out with friends
+- First computer I ever saw: My family computer
+- About me: I am a first-year student at UVA interested in Data Science, entrepreneurship, sports, and healthcare
+
+
 # Keanan Berry
 
 - Hometown: Fredericksburg, VA
