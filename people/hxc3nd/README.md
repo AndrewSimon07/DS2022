@@ -1,5 +1,4 @@
-# Your Name
-
+#Charlie Hamilton
 - Hometown: Newport Beach CA
 - Hobbies: Surfing, Lifting, reading
 - First computer I ever saw: Mother's desktop
