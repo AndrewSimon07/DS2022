@@ -1,6 +1,8 @@
 # Course materials: folder shells on GitHub, contents stay local
 class/bundles/
 class/s3-storage/
+class/04-sql/fastapi-rds/
+demos/04-sql/create_dbs.sql
 !class/README.md
 labs/*
 !labs/README.md

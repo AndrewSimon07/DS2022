@@ -55,7 +55,7 @@ mycli -h
 ### Connecting to a database instance
 
 ```bash
-mycli -h ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com -P 3306 -u ds2022 -p
+mycli -h ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com -P 3306 -u ds2022 -p
 ```
 
 The `ds2022` account can run read operations (`SHOW`, `DESCRIBE`, `SELECT`, joins). It cannot create databases or insert, update, or delete rows.
@@ -162,7 +162,7 @@ source --special restaurant.sql
 No interactive session needed; `mycli` runs the file and exits:
 
 ```bash
-mycli -h ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com -P 3306 -u USER -p < restaurant.sql
+mycli -h ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com -P 3306 -u USER -p < restaurant.sql
 ```
 
 Same statements as Option A; the shell feeds the file on stdin instead of using `source`.
@@ -209,7 +209,7 @@ cp /path/to/DS2022/class/04-sql/basic-sql.py .
 Set connection environment variables (password on Canvas), then run:
 
 ```bash
-export DBHOST='ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com'
+export DBHOST='ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com'
 export DBUSER='ds2022'
 export DBPASS='YOUR_PASSWORD'
 export DB='media'

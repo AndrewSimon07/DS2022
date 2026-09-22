@@ -10,7 +10,7 @@ import mysql.connector
 import pandas as pd
 
 # Same defaults as basic-sql.ipynb; override with env vars if set.
-DBHOST = os.environ.get("DBHOST", "ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com")
+DBHOST = os.environ.get("DBHOST", "ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com")
 DBUSER = os.environ.get("DBUSER", "ds2022")
 DBPASS = os.environ.get("DBPASS", "")  # password on Canvas
 DB = os.environ.get("DB", "media")  # MOCK_DATA lives here
@@ -19,7 +19,6 @@ db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database
 cur = db.cursor()
 
 
-# --- Basic SELECT → list (notebook) ---
 def get_people_list():
     """Return MOCK_DATA rows with id between 6 and 19 as a list of tuples."""
     query = "SELECT * FROM MOCK_DATA WHERE id > 5 AND id < 20 ORDER BY last_name;"
@@ -35,7 +34,6 @@ def get_people_list():
         return None
 
 
-# --- Basic SELECT → JSON (notebook) ---
 def get_people_json():
     """Return the same id-filtered MOCK_DATA rows as a JSON string of objects."""
     query = "SELECT * FROM MOCK_DATA WHERE id > 5 AND id < 20 ORDER BY last_name;"
@@ -52,7 +50,6 @@ def get_people_json():
         return None
 
 
-# --- SELECT with a parameter (notebook) ---
 def get_people_by_lastname(lname):
     """Return MOCK_DATA rows whose last_name matches ``lname`` (list of tuples)."""
     query = f"SELECT * FROM MOCK_DATA WHERE last_name = '{lname}';"
@@ -68,7 +65,6 @@ def get_people_by_lastname(lname):
         return None
 
 
-# --- Query into a Pandas DataFrame (notebook) ---
 def get_people_dataframe():
     """Load up to 200 MOCK_DATA rows into a pandas DataFrame, ordered by last_name."""
     query = "SELECT * FROM MOCK_DATA ORDER BY last_name LIMIT 200;"
@@ -85,7 +81,6 @@ def get_people_dataframe():
         return None
 
 
-# --- Continent counts bar chart (notebook) ---
 def plot_continent_counts():
     """Count people per continent, show a bar chart, and return the DataFrame."""
     query = "SELECT continent, COUNT(continent) FROM MOCK_DATA GROUP BY continent;"

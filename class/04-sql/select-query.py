@@ -4,7 +4,7 @@ import os
 import mysql.connector
 
 # In your terminal, define the following environment variables:
-# export DBHOST='ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com'
+# export DBHOST='ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com'
 # export DBUSER='ds2022'
 # export DBPASS='<see AWS_RDS_CREDENTIALS.txt on Canvas>'
 # export DB='media'  # optional, defaults to 'media'
