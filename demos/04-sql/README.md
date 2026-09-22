@@ -49,7 +49,7 @@ source ~/.zshrc
 Confirm `mycli` works:
 
 ```bash
-mycli -h
+mycli --help
 ```
 
 ### Connecting to a database instance
@@ -89,8 +89,8 @@ Shows `employees` plus `employees_jobs`, `jobs`, and `states` (after the demo sc
 ┌──────────────────────┬────────────┐
 │ Tables_in_restaurant │ Table_type │
 ├──────────────────────┼────────────┤
-│ employees_jobs       │ BASE TABLE │
 │ employees            │ BASE TABLE │
+│ employees_jobs       │ BASE TABLE │
 │ jobs                 │ BASE TABLE │
 │ states               │ BASE TABLE │
 └──────────────────────┴────────────┘
@@ -143,29 +143,42 @@ DELETE FROM employees
 WHERE state_id = 56;
 ```
 
+### Drop table
+
+```sql
+DROP TABLE table_name;
+```
+
+```sql
+DROP TABLE IF EXISTS employees;
+```
+The `IF EXISTS` is convenient to avoid errors when the drop operation is executed on a table that doesn't exist.
+
 ### SQL Scripts
 
-A `.sql` file is a sequence of statements MySQL can execute in order. [restaurant.sql](./restaurant.sql) creates the `restaurant` schema and sample data. Run it from `demos/04-sql/` (or use a full path to the file). Requires a write-capable account (not `ds2022`).
+A `.sql` file is a sequence of statements MySQL can execute in order. [restaurant.sql](./restaurant.sql) creates the four demo tables and their sample rows **in the current database**. It does not create the database, so `restaurant` must already exist and be selected before you run it. [create_view.sql](./create_view.sql) adds the `employees_states` view the same way. Run them from `demos/04-sql/` (or use a full path to the file). Both require a write-capable account (not `ds2022`).
 
 **Option A: `source` inside `mycli`**
 
-Already connected in an interactive session:
+Already connected in an interactive session, with `restaurant` selected (either connect with `mycli ... restaurant` or run `USE restaurant;` first):
 
 ```sql
-source --special restaurant.sql
+source restaurant.sql
 ```
 
-`source` reads the file and runs each statement in the current session. `--special` is required in `mycli` so client-side commands in the file are accepted; without it the load can stop with an error. If prompted about a destructive command, that is the script’s `DROP TABLE IF EXISTS` lines.
+`source` reads the file and runs each statement in the current session. If the database is not selected, every statement fails with `ERROR 1046 (No database selected)`.
 
 **Option B: redirect from the shell**
 
-No interactive session needed; `mycli` runs the file and exits:
+No interactive session needed; `mycli` runs the file and exits. Pass the database name as the final argument so the statements have a target:
 
 ```bash
-mycli -h ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com -P 3306 -u USER -p < restaurant.sql
+mycli -h ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com -P 3306 -u USER -p restaurant < restaurant.sql
 ```
 
 Same statements as Option A; the shell feeds the file on stdin instead of using `source`.
+
+The script is not safe to re-run as-is: the tables are created with `IF NOT EXISTS`, so a second run leaves them in place and the `INSERT` statements fail with duplicate-key errors. Run `drop_tables.sql` first to reset the demo to a clean state.
 
 ### Join
 
@@ -180,7 +193,8 @@ LEFT JOIN states ON employees.state_id = states.state_code;
 ```sql
 SELECT employees.name, states.home_state
 FROM employees
-LEFT JOIN states ON employees.state_id = states.state_code;
+LEFT JOIN states ON employees.state_id = states.state_code
+WHERE employees.name = 'Alice';
 ```
 
 ## Python and SQL
