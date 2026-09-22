@@ -60,6 +60,12 @@ mycli -h ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com -P 3306 -u ds2022 -p
 
 The `ds2022` account can run read operations (`SHOW`, `DESCRIBE`, `SELECT`, joins). It cannot create databases or insert, update, or delete rows.
 
+### Show existing databases
+
+```sql
+SHOW DATABASES;
+```
+
 ### Create a database
 
 ```sql
@@ -83,16 +89,11 @@ CREATE TABLE employees (
 SHOW FULL TABLES;
 ```
 
-Shows `employees` plus `employees_jobs`, `jobs`, and `states` (after the demo schema is loaded).
-
 ```text
 ┌──────────────────────┬────────────┐
 │ Tables_in_restaurant │ Table_type │
 ├──────────────────────┼────────────┤
 │ employees            │ BASE TABLE │
-│ employees_jobs       │ BASE TABLE │
-│ jobs                 │ BASE TABLE │
-│ states               │ BASE TABLE │
 └──────────────────────┴────────────┘
 ```
 
@@ -146,7 +147,7 @@ WHERE state_id = 56;
 ### Drop table
 
 ```sql
-DROP TABLE table_name;
+DROP TABLE employees;
 ```
 
 ```sql
@@ -180,6 +181,10 @@ Same statements as Option A; the shell feeds the file on stdin instead of using 
 
 The script is not safe to re-run as-is: the tables are created with `IF NOT EXISTS`, so a second run leaves them in place and the `INSERT` statements fail with duplicate-key errors. Run `drop_tables.sql` first to reset the demo to a clean state.
 
+```sql
+SHOW FULL TABLES;
+```
+
 ### Join
 
 ```sql
@@ -195,6 +200,25 @@ SELECT employees.name, states.home_state
 FROM employees
 LEFT JOIN states ON employees.state_id = states.state_code
 WHERE employees.name = 'Alice';
+```
+
+### Creating a View
+
+```sql
+CREATE OR REPLACE VIEW employees_states AS
+SELECT e.name, s.home_state
+FROM employees e
+JOIN states s ON e.state_id = s.state_code;
+```
+
+A view is a saved query with a name. It stores no rows of its own: every time you select from it, MySQL re-runs the query above against the current contents of `employees` and `states`. 
+- Tables hold the data,
+- Views give you a reusable shape of that data. 
+
+Once the view exists, you query it exactly like a table, which lets you hide a repeated join behind one simple `SELECT`.
+
+```sql
+SELECT * FROM employees_states;
 ```
 
 ## Python and SQL
