@@ -52,9 +52,9 @@ def get_people_json():
 
 def get_people_by_lastname(lname):
     """Return MOCK_DATA rows whose last_name matches ``lname`` (list of tuples)."""
-    query = f"SELECT * FROM MOCK_DATA WHERE last_name = '{lname}';"
+    query = "SELECT * FROM MOCK_DATA WHERE last_name = %s;"
     try:
-        cur.execute(query)
+        cur.execute(query, (lname,))
         results = cur.fetchall()
         output = []
         for r in results:
