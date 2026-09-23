@@ -100,7 +100,8 @@ def plot_continent_counts():
         return None
 
 
-if __name__ == "__main__":
+def main():
+    """Run the demo queries and close the database connection."""
     print("=== list ===")
     print(get_people_list())
 
@@ -122,3 +123,7 @@ if __name__ == "__main__":
 
     cur.close()
     db.close()
+
+
+if __name__ == "__main__":
+    main()
