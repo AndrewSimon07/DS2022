@@ -1,37 +1,41 @@
 #!/usr/bin/env python3
-"""Load a CSV into a local DuckDB database (Lab 04 optional Step 8).
+"""Load a small in-memory DataFrame into a local DuckDB database.
 
-Requires:
-  uv add pandas duckdb
-
-Put MOCK_DATA.csv in the current directory, then:
-  uv run python duckdb_example.py
-
-Creates mock.duckdb in the current directory with a table named mock.
+DuckDB is an in-process SQL engine: it runs inside your Python process (no
+server) and can store tables in a local file such as demo.duckdb.
 """
 
 import duckdb
 import pandas as pd
 
-CSV_FILE = "MOCK_DATA.csv"
-DB_FILE = "mock.duckdb"
-TABLE = "mock"
+DB_FILE = "demo.duckdb"
+TABLE = "demo"
 
 
 def main():
-    """Read CSV, drop incomplete rows, and write them into a DuckDB file."""
-    df = pd.read_csv(CSV_FILE)
-    df = df.dropna()
-    print(f"Loaded {len(df)} rows from {CSV_FILE} after dropna()")
+    """Build a DataFrame in memory and write it into a DuckDB file."""
+    df = pd.DataFrame(
+        {
+            "id": [1, 2, 3, 4],
+            "name": ["Alice", "Bob", "Carol", "Dave"],
+            "group": ["A", "B", "A", "C"],
+            "score": [88, 72, 95, 81],
+        }
+    )
+    print(f"Built DataFrame with {len(df)} rows")
+    print(df)
 
     con = duckdb.connect(DB_FILE)
     try:
         # DuckDB can create a table directly from a pandas DataFrame
         con.execute(f"CREATE OR REPLACE TABLE {TABLE} AS SELECT * FROM df")
+
         count = con.execute(f"SELECT COUNT(*) FROM {TABLE}").fetchone()[0]
-        sample = con.execute(f"SELECT * FROM {TABLE} LIMIT 5").fetchdf()
-        print(f"Wrote {count} rows to {DB_FILE} table '{TABLE}'")
-        print(sample)
+        print(f"{count} rows found in {DB_FILE} table '{TABLE}'")
+
+        print("Reading table back into a pandas DataFrame")
+        new_df = con.execute(f"SELECT * FROM {TABLE}").fetchdf()
+        print(new_df)
     finally:
         con.close()
 

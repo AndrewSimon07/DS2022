@@ -184,3 +184,6 @@ cython_debug/
 
 # SQLTools scratch query files
 *.session.sql
+
+# DuckDB local database files
+*.duckdb

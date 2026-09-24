@@ -540,12 +540,19 @@ uv add pandas duckdb
 import duckdb
 import pandas as pd
 
-df = pd.read_csv("MOCK_DATA.csv").dropna()
+df = pd.DataFrame(
+    {
+        "id": [1, 2, 3, 4],
+        "name": ["Alice", "Bob", "Carol", "Dave"],
+        "group": ["A", "B", "A", "C"],
+        "score": [88, 72, 95, 81],
+    }
+)
 
 con = duckdb.connect("mock.duckdb")
 con.execute("CREATE OR REPLACE TABLE mock AS SELECT * FROM df")
 print(con.execute("SELECT COUNT(*) FROM mock").fetchone())
-print(con.execute("SELECT * FROM mock LIMIT 5").fetchdf())
+print(con.execute("SELECT * FROM mock").fetchdf())
 con.close()
 ```
 
