@@ -8,14 +8,14 @@ import mysql.connector
 # export DBHOST='ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com'
 # export DBUSER='ds2022'
 # export DBPASS='<see AWS_RDS_CREDENTIALS.txt on Canvas>'
-# export DB='khs3z_db'  # optional, defaults to 'khs3z_db'
+# export DBNAME='<your database name>'
 
 DBHOST = os.environ.get('DBHOST')
 DBUSER = os.environ.get('DBUSER')
 DBPASS = os.environ.get('DBPASS')
-DB = os.environ.get('DB', 'khs3z_db')
+DBNAME = os.environ.get('DBNAME')
 
-db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DB)
+db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DBNAME)
 cursor = db.cursor(dictionary=True)
 
 # Insert statement with parameterized values

@@ -7,14 +7,14 @@ import mysql.connector
 # export DBHOST='ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com'
 # export DBUSER='ds2022'
 # export DBPASS='<see AWS_RDS_CREDENTIALS.txt on Canvas>'
-# export DB='media'  # optional, defaults to 'media'
+# export DBNAME='<your database name>'
 
 DBHOST = os.environ.get('DBHOST')
 DBUSER = os.environ.get('DBUSER')
 DBPASS = os.environ.get('DBPASS')
-DB = os.environ.get('DB', 'media')
+DBNAME = os.environ.get('DBNAME')
 
-db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DB)
+db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DBNAME)
 cursor = db.cursor(dictionary=True)
 
 query = "SELECT id, email, ip_address FROM MOCK_DATA LIMIT 5"

@@ -13,9 +13,9 @@ import pandas as pd
 DBHOST = os.environ.get("DBHOST", "ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com")
 DBUSER = os.environ.get("DBUSER", "ds2022")
 DBPASS = os.environ.get("DBPASS", "")  # password on Canvas
-DB = os.environ.get("DB", "media")  # MOCK_DATA lives here
+DBNAME = os.environ.get("DBNAME", "people")  # MOCK_DATA lives here
 
-db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB)
+db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DBNAME)
 cur = db.cursor()
 
 

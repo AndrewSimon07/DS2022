@@ -250,7 +250,7 @@ Set connection environment variables (password on Canvas), then run:
 export DBHOST='ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com'
 export DBUSER='ds2022'
 export DBPASS='YOUR_PASSWORD'
-export DB='media'
+export DBNAME='media'
 
 uv run python basic-sql.py
 ```
@@ -270,4 +270,4 @@ cp /path/to/DS2022/class/04-sql/basic-sql.ipynb .
 uv run jupyter lab basic-sql.ipynb
 ```
 
-In the notebook’s connection cell, set `DBUSER` / `DBPASS` for the read-only `ds2022` account and `DB = "media"`. Then run the cells in order.
+In the notebook’s connection cell, set `DBUSER` / `DBPASS` for the read-only `ds2022` account and `DBNAME = "media"`. Then run the cells in order.

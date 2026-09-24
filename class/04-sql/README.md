@@ -393,9 +393,10 @@ There are many Python packages for interacting with SQL databases or databases i
 In your terminal, define the following environment variables:
 
 ```bash
-DBHOST=ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com
-DBUSER=ds2022
-DBPASS=<see AWS_RDS_CREDENTIALS.txt on Canvas>
+export DBHOST='ds2022.cgls84scuy1e.us-east-1.rds.amazonaws.com'
+export DBUSER='ds2022'
+export DBPASS='YOUR_PASSWORD'  # from Canvas
+export DBNAME='restaurant_003'  # or restaurant_001 / restaurant_002
 ```
 
 ### Imports
@@ -412,13 +413,13 @@ import mysql.connector
 DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER")
 DBPASS = os.environ.get("DBPASS")
-DB = "restaurant_003"  # or restaurant_001 / restaurant_002 for your section
+DBNAME = os.environ.get("DBNAME", "restaurant_003")  # or restaurant_001 / restaurant_002
 ```
 
 ### Connection Strings
 
 ```python
-db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DB)
+db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DBNAME)
 ```
 
 ### Cursor
@@ -461,9 +462,9 @@ import mysql.connector
 DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER")
 DBPASS = os.environ.get("DBPASS")
-DB = "restaurant_003"
+DBNAME = os.environ.get("DBNAME", "restaurant_003")
 
-db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DB)
+db = mysql.connector.connect(host=DBHOST, user=DBUSER, password=DBPASS, database=DBNAME)
 cursor = db.cursor(dictionary=True)
 
 query = "SELECT * FROM employees ORDER BY name"
@@ -618,11 +619,11 @@ from mysql.connector import Error
 DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER")
 DBPASS = os.environ.get("DBPASS")
-DB = "restaurant_003"
+DBNAME = os.environ.get("DBNAME", "restaurant_003")
 
 try:
     with mysql.connector.connect(
-        host=DBHOST, user=DBUSER, password=DBPASS, database=DB
+        host=DBHOST, user=DBUSER, password=DBPASS, database=DBNAME
     ) as connection:
         with connection.cursor(dictionary=True) as cursor:
             query = "SELECT * FROM employees WHERE employee_id = %s"
@@ -644,10 +645,10 @@ import mysql.connector
 DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER")
 DBPASS = os.environ.get("DBPASS")
-DB = os.environ.get("DBNAME")  # e.g. COMPUTING_ID_mock
+DBNAME = os.environ.get("DBNAME")  # e.g. COMPUTING_ID_mock
 
 connection = mysql.connector.connect(
-    host=DBHOST, user=DBUSER, password=DBPASS, database=DB
+    host=DBHOST, user=DBUSER, password=DBPASS, database=DBNAME
 )
 cursor = connection.cursor()
 
@@ -680,7 +681,7 @@ from mysql.connector import pooling
 DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER")
 DBPASS = os.environ.get("DBPASS")
-DB = "restaurant_003"
+DBNAME = os.environ.get("DBNAME", "restaurant_003")
 
 pool_config = {
     "pool_name": "mypool",
@@ -689,7 +690,7 @@ pool_config = {
     "host": DBHOST,
     "user": DBUSER,
     "password": DBPASS,
-    "database": DB,
+    "database": DBNAME,
 }
 
 connection_pool = pooling.MySQLConnectionPool(**pool_config)
